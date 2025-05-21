@@ -130,7 +130,6 @@ ScreenManager:
 '''
 
 class ImgButton(ButtonBehavior, Image):
-    """An Image that behaves like a button."""
     pass
 
 class HomeScreen(Screen):
@@ -160,10 +159,7 @@ class CameraApp(MDApp):
         filename = datetime.now().strftime("IMG_%Y%m%d_%H%M%S.jpg")
         filepath = os.path.join(self.photo_folder, filename)
         try:
-            camera.take_picture(
-                filename=filepath,
-                on_complete=lambda x: self.on_photo_taken(x)
-            )
+            camera.take_picture(filename=filepath, on_complete=lambda x: self.on_photo_taken(x))
         except NotImplementedError:
             print("Camera not available on this platform.")
 
@@ -182,11 +178,7 @@ class CameraApp(MDApp):
 
         for img_name in images:
             img_path = os.path.join(self.photo_folder, img_name)
-            img_btn = ImgButton(source=img_path,
-                                size_hint_y=None,
-                                height=dp(120),
-                                allow_stretch=True,
-                                keep_ratio=True)
+            img_btn = ImgButton(source=img_path, size_hint_y=None, height=dp(120), allow_stretch=True, keep_ratio=True)
             img_btn.bind(on_release=lambda btn, p=img_path: self.show_image_popup(p))
             grid.add_widget(img_btn)
 
@@ -201,8 +193,7 @@ class CameraApp(MDApp):
             content_cls=content,
             size_hint=(0.9, 0.9),
             buttons=[
-                MDFlatButton(text="CLOSE", on_release=lambda x: self.dialog.dismiss())
-            ],
+                MDFlatButton(text="CLOSE", on_release=lambda x: self.dialog.dismiss())],
         )
         self.dialog.open()
 
