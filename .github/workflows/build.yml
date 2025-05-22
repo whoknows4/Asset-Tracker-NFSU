@@ -1,43 +1,39 @@
-name: CI
 on:
+
   push:
+
     branches: [ main ]
 
+
+
 jobs:
+
   build:
-    runs-on: ubuntu-latest
+
+    runs-on: ubuntu-22.04
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
 
-      - name: Get Date
-        id: get-date
-        run: echo "date=$(date -u '+%Y%m%d')" >> $GITHUB_OUTPUT
-        shell: bash
+      - uses: actions/checkout@v4
 
-      - name: Cache Buildozer global directory
-        uses: actions/cache@v2
+      - name: Build APK
+
+        uses: digreatbrian/buildozer-action@v2
+
         with:
-          path: .buildozer_global
-          key: buildozer-global-${{ hashFiles('buildozer.spec') }}
 
-      - name: Cache Buildozer build directory
-        uses: actions/cache@v2
-        with:
-          path: .buildozer
-          key: ${{ runner.os }}-${{ steps.get-date.outputs.date }}-${{ hashFiles('buildozer.spec') }}
+          python-version: 3.11
 
-      - name: Build with Buildozer
-        uses: ArtemSBulgakov/buildozer-action@v1
-        id: buildozer
-        with:
-          command: buildozer android debug
-          buildozer_version: stable
+          buildozer-cmd: buildozer -v android debug
+
+
 
       - name: Upload artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: package
-          path: ${{ steps.buildozer.outputs.filename }}
 
+        uses: actions/upload-artifact@v4
+
+        with:
+
+          name: package
+
+          path: ./bin/*.apk
