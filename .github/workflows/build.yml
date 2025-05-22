@@ -1,5 +1,5 @@
 
-name: CI
+name: Build APK
 
 on:
   push:
@@ -11,36 +11,43 @@ jobs:
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Get Date
         id: get-date
         run: echo "date=$(date -u +%Y%m%d)" >> $GITHUB_OUTPUT
 
-      - name: Cache Buildozer Global Directory
+      - name: Cache Global Buildozer Directory
         uses: actions/cache@v3
         with:
           path: .buildozer_global
           key: buildozer-global-${{ hashFiles('buildozer.spec') }}
 
-      - name: Cache Buildozer Directory
+      - name: Cache Local Buildozer Directory
         uses: actions/cache@v3
         with:
           path: .buildozer
-          key: ${{ runner.os }}-${{ steps.get-date.outputs.date }}-${{ hashFiles('buildozer.spec') }}
+          key: buildozer-${{ runner.os }}-${{ steps.get-date.outputs.date }}-${{ hashFiles('buildozer.spec') }}
 
-      - name: Build APK with Buildozer
-        uses: ArtemSBulgakov/buildozer-action@v1
-        id: buildozer
+      - name: Set up Python
+        uses: actions/setup-python@v4
         with:
-          command: buildozer android debug
-          buildozer_version: stable
+          python-version: '3.10'
+
+      - name: Install Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y python3-pip zip unzip openjdk-17-jdk
+          pip install buildozer cython
+
+      - name: Build APK
+        run: buildozer android debug
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v3
         with:
-          name: package
-          # Use the output from the buildozer step, and fall back to a default path if needed
-          path: ${{ steps.buildozer.outputs.filename || 'bin/*.apk' }}
+          name: apk
+          path: bin/*.apk
+
 
 
