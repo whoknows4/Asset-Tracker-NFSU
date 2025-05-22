@@ -10,42 +10,44 @@ jobs:
     runs-on: ubuntu-22.04
 
     steps:
-      - name: Checkout Repository
+      - name: Checkout code
         uses: actions/checkout@v3
-
-      - name: Get Date
-        id: get-date
-        run: echo "date=$(date -u +%Y%m%d)" >> $GITHUB_OUTPUT
-
-      - name: Cache Global Buildozer Directory
-        uses: actions/cache@v3
-        with:
-          path: .buildozer_global
-          key: buildozer-global-${{ hashFiles('buildozer.spec') }}
-
-      - name: Cache Local Buildozer Directory
-        uses: actions/cache@v3
-        with:
-          path: .buildozer
-          key: buildozer-${{ runner.os }}-${{ steps.get-date.outputs.date }}-${{ hashFiles('buildozer.spec') }}
 
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.10'
 
-      - name: Install Dependencies
+      - name: Get Date
+        id: get-date
+        run: echo "date=$(date +'%Y%m%d')" >> $GITHUB_OUTPUT
+
+      - name: Cache Buildozer Global Directory
+        uses: actions/cache@v3
+        with:
+          path: .buildozer_global
+          key: buildozer-global-${{ hashFiles('buildozer.spec') }}
+
+      - name: Cache Buildozer Build Directory
+        uses: actions/cache@v3
+        with:
+          path: .buildozer
+          key: ${{ runner.os }}-${{ steps.get-date.outputs.date }}-${{ hashFiles('buildozer.spec') }}
+
+      - name: Install dependencies
         run: |
-          sudo apt-get update
-          sudo apt-get install -y python3-pip zip unzip openjdk-17-jdk
+          sudo apt update
+          sudo apt install -y python3-pip zip unzip openjdk-17-jdk
+          pip install --upgrade pip
           pip install buildozer cython
 
-      - name: Build APK
+      - name: Build with Buildozer
         run: buildozer android debug
 
-      - name: Upload APK Artifact
-        uses: actions/upload-artifact@v3.1.0  # Updated version
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v3
         with:
-          name: apk
+          name: app-debug.apk
           path: bin/*.apk
+
 
