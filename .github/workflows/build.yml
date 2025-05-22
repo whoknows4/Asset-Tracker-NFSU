@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-22.04  # ✅ Updated from ubuntu-20.04
+    runs-on: ubuntu-22.04
 
     steps:
       - name: Checkout Repository
@@ -18,13 +18,13 @@ jobs:
         run: echo "date=$(date -u +%Y%m%d)" >> $GITHUB_OUTPUT
 
       - name: Cache Buildozer Global Directory
-        uses: actions/cache@v2
+        uses: actions/cache@v3   # ✅ updated to v3
         with:
           path: .buildozer_global
           key: buildozer-global-${{ hashFiles('buildozer.spec') }}
 
       - name: Cache Buildozer Directory
-        uses: actions/cache@v2
+        uses: actions/cache@v3   # ✅ updated to v3
         with:
           path: .buildozer
           key: ${{ runner.os }}-${{ steps.get-date.outputs.date }}-${{ hashFiles('buildozer.spec') }}
@@ -41,5 +41,6 @@ jobs:
         with:
           name: package
           path: ${{ steps.buildozer.outputs.filename }}
+
 
 
