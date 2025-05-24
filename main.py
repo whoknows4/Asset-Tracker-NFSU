@@ -110,6 +110,7 @@ ScreenManager:
                 cols: 3
                 padding: dp(5)
                 spacing: dp(5)
+                adaptive_height: True
                 size_hint_y: None
                 height: self.minimum_height
 
@@ -126,7 +127,6 @@ ScreenManager:
             text: "this has to filled later"
             halign: "center"
             font_style: "H5"
-
 '''
 
 class ImgButton(ButtonBehavior, Image):
@@ -148,6 +148,7 @@ class CameraApp(MDApp):
     def build(self):
         self.photo_folder = os.path.join(self.user_data_dir, "MyCameraAppPhotos")
         os.makedirs(self.photo_folder, exist_ok=True)
+        self.dialog = None
         return Builder.load_string(KV)
 
     def change_screen(self, name):
@@ -161,12 +162,17 @@ class CameraApp(MDApp):
         try:
             camera.take_picture(filename=filepath, on_complete=lambda x: self.on_photo_taken(x))
         except NotImplementedError:
-            print("Camera not available on this platform.")
+            self.show_error_dialog("Camera not available on this platform.")
 
     def on_photo_taken(self, filepath):
-        print(f"Photo saved to {filepath}")
-        if self.root.current == "drive":
-            self.load_drive()
+        if filepath and os.path.exists(filepath):
+            print(f"Photo saved to {filepath}")
+            if self.root.current == "drive":
+                self.load_drive()
+            else:
+                self.change_screen("drive")
+        else:
+            self.show_error_dialog("Photo was not saved. Try again.")
 
     def load_drive(self):
         drive_screen = self.root.get_screen("drive")
@@ -174,18 +180,17 @@ class CameraApp(MDApp):
         grid.clear_widgets()
 
         images = [f for f in os.listdir(self.photo_folder) if f.lower().endswith((".png", ".jpg", ".jpeg"))]
-        images.sort(reverse=True) 
+        images.sort(reverse=True)
 
         for img_name in images:
             img_path = os.path.join(self.photo_folder, img_name)
-            img_btn = ImgButton(source=img_path, size_hint_y=None, height=dp(120), allow_stretch=True, keep_ratio=True)
+            img_btn = ImgButton(source=img_path, size_hint_y=None, height=dp(120), allow_stretch=True)
             img_btn.bind(on_release=lambda btn, p=img_path: self.show_image_popup(p))
             grid.add_widget(img_btn)
 
     def show_image_popup(self, img_path):
-        if hasattr(self, 'dialog') and self.dialog:
+        if self.dialog:
             self.dialog.dismiss()
-
         content = Image(source=img_path, allow_stretch=True)
         self.dialog = MDDialog(
             title=os.path.basename(img_path),
@@ -193,7 +198,18 @@ class CameraApp(MDApp):
             content_cls=content,
             size_hint=(0.9, 0.9),
             buttons=[
-                MDFlatButton(text="CLOSE", on_release=lambda x: self.dialog.dismiss())],
+                MDFlatButton(text="CLOSE", on_release=lambda x: self.dialog.dismiss())
+            ],
+        )
+        self.dialog.open()
+
+    def show_error_dialog(self, message):
+        if self.dialog:
+            self.dialog.dismiss()
+        self.dialog = MDDialog(
+            title="Error",
+            text=message,
+            buttons=[MDFlatButton(text="OK", on_release=lambda x: self.dialog.dismiss())],
         )
         self.dialog.open()
 
