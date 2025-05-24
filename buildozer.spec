@@ -4,10 +4,10 @@
 title = Asset Tracker
 
 # (str) Package name
-package.name = assettracker
+package.name = asset_tracker
 
 # (str) Package domain (needed for android/ios packaging)
-package.domain = org.assettracker
+package.domain = org.asset_tracker
 
 # (str) Source code where the main.py live
 source.dir = .
@@ -16,7 +16,7 @@ source.dir = .
 source.include_exts = py,png,jpg,kv,atlas
 
 # (list) List of inclusions using pattern matching
-#source.include_patterns = assets/*,images/*.png
+#source.include_patterns = assets/,images/.png
 
 # (list) Source files to exclude (let empty to not exclude anything)
 #source.exclude_exts = spec
@@ -26,18 +26,18 @@ source.include_exts = py,png,jpg,kv,atlas
 
 # (list) List of exclusions using pattern matching
 # Do not prefix with './'
-#source.exclude_patterns = license,images/*/*.jpg
+#source.exclude_patterns = license,images//.jpg
 
 # (str) Application versioning (method 1)
 version = 0.1
 
 # (str) Application versioning (method 2)
-# version.regex = __version__ = ['"](.*)['"]
+# version.regex = _version_ = ['"](.*)['"]
 # version.filename = %(source.dir)s/main.py
 
 # (list) Application requirements
 # comma separated e.g. requirements = sqlite3,kivy
-requirements = python3,kivy,plyer,https://github.com/kivymd/KivyMD/archive/master.zip,materialyoucolor,exceptiongroup, asyncgui, asynckivy,pillow
+requirements = python3,kivy,kivymd,plyer
 
 # (str) Custom source folders for requirements
 # Sets custom source for any requirements with recipes
@@ -61,13 +61,13 @@ orientation = portrait
 #
 
 #
-author = © Copyright Achintya V
+# author = © Copyright Info
 
 # change the major version of python used by the app
 osx.python_version = 3
 
 # Kivy version to use
-osx.kivy_version = 2.3.0
+osx.kivy_version = 1.9.1
 
 #
 # Android specific
@@ -95,22 +95,22 @@ fullscreen = 0
 
 # (list) Permissions
 # (See https://python-for-android.readthedocs.io/en/latest/buildoptions/#build-options-1 for all the supported syntaxes and properties)
-android.permissions = CAMERA,READ_MEDIA_IMAGES,READ_MEDIA_VIDEO,READ_MEDIA_AUDIO
+android.permissions = android.permission.INTERNET, (name=android.permission.WRITE_EXTERNAL_STORAGE;maxSdkVersion=18)
 
 # (list) features (adds uses-feature -tags to manifest)
 #android.features = android.hardware.usb.host
 
 # (int) Target Android API, should be as high as possible.
-android.api = 33
+android.api = 31
 
 # (int) Minimum API your APK / AAB will support.
 android.minapi = 21
 
 # (int) Android SDK version to use
-android.sdk = 33
+android.sdk = 20
 
 # (str) Android NDK version to use
-android.ndk = 25b
+android.ndk = 23b
 
 # (int) Android NDK API to use. This is the minimum API your app will support, it should usually match android.minapi.
 android.ndk_api = 21
@@ -136,7 +136,7 @@ android.private_storage = True
 # agreements. This is intended for automation only. If set to False,
 # the default, you will be shown the license when first running
 # buildozer.
-android.accept_sdk_license = True
+# android.accept_sdk_license = False
 
 # (str) Android entry point, default is ok for Kivy-based app
 #android.entrypoint = org.kivy.android.PythonActivity
@@ -282,7 +282,7 @@ android.accept_sdk_license = True
 #android.copy_libs = 1
 
 # (list) The Android archs to build for, choices: armeabi-v7a, arm64-v8a, x86, x86_64
-# In past, was `android.arch` as we weren't supporting builds for multiple archs at the same time.
+# In past, was android.arch as we weren't supporting builds for multiple archs at the same time.
 android.archs = arm64-v8a, armeabi-v7a
 
 # (int) overrides automatic versionCode computation (used in build.gradle)
@@ -290,7 +290,7 @@ android.archs = arm64-v8a, armeabi-v7a
 # android.numeric_version = 1
 
 # (bool) enables Android auto backup feature (Android API >=23)
-android.allow_backup = 1
+android.allow_backup = True
 
 # (str) XML file for custom backup rules (see official auto backup documentation)
 # android.backup_rules =
@@ -387,15 +387,15 @@ ios.codesign.allowed = false
 #ios.codesign.development_team.release = <hexstring>
 
 # (str) URL pointing to .ipa file to be installed
-# This option should be defined along with `display_image_url` and `full_size_image_url` options.
+# This option should be defined along with display_image_url and full_size_image_url options.
 #ios.manifest.app_url =
 
 # (str) URL pointing to an icon (57x57px) to be displayed during download
-# This option should be defined along with `app_url` and `full_size_image_url` options.
+# This option should be defined along with app_url and full_size_image_url options.
 #ios.manifest.display_image_url =
 
 # (str) URL pointing to a large icon (512x512px) to be used by iTunes
-# This option should be defined along with `app_url` and `display_image_url` options.
+# This option should be defined along with app_url and display_image_url options.
 #ios.manifest.full_size_image_url =
 
 
@@ -422,7 +422,7 @@ warn_on_root = 1
 #    Instead of doing:
 #
 #[app]
-#source.exclude_patterns = license,data/audio/*.wav,data/images/original/*
+#source.exclude_patterns = license,data/audio/.wav,data/images/original/
 #
 #    This can be translated into:
 #
