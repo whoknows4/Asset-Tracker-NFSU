@@ -37,7 +37,7 @@ version = 0.1
 
 # (list) Application requirements
 # comma separated e.g. requirements = sqlite3,kivy
-requirements = python3,kivy,kivymd,plyer,https://github.com/kivymd/KivyMD/archive/master.zip,materialyoucolor,exceptiongroup, asyncgui, asynckivy, android,pillow
+requirements = python3,kivy,plyer,https://github.com/kivymd/KivyMD/archive/master.zip,materialyoucolor,exceptiongroup, asyncgui, asynckivy,pillow
 
 # (str) Custom source folders for requirements
 # Sets custom source for any requirements with recipes
@@ -95,19 +95,19 @@ fullscreen = 0
 
 # (list) Permissions
 # (See https://python-for-android.readthedocs.io/en/latest/buildoptions/#build-options-1 for all the supported syntaxes and properties)
-android.permissions = CAMERA,WRITE_EXTERNAL_STORAGE,READ_EXTERNAL_STORAGE
+android.permissions = CAMERA,READ_MEDIA_IMAGES,READ_MEDIA_VIDEO,READ_MEDIA_AUDIO
 
 # (list) features (adds uses-feature -tags to manifest)
 #android.features = android.hardware.usb.host
 
 # (int) Target Android API, should be as high as possible.
-android.api = 34
+android.api = 33
 
 # (int) Minimum API your APK / AAB will support.
 android.minapi = 21
 
 # (int) Android SDK version to use
-android.sdk = 34
+android.sdk = 33
 
 # (str) Android NDK version to use
 android.ndk = 25b
@@ -290,7 +290,7 @@ android.archs = arm64-v8a, armeabi-v7a
 # android.numeric_version = 1
 
 # (bool) enables Android auto backup feature (Android API >=23)
-android.allow_backup = True
+android.allow_backup = 1
 
 # (str) XML file for custom backup rules (see official auto backup documentation)
 # android.backup_rules =
