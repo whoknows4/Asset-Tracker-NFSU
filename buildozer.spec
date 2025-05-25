@@ -16,7 +16,7 @@ source.dir = .
 source.include_exts = py,png,jpg,kv,atlas
 
 # (list) List of inclusions using pattern matching
-#source.include_patterns = assets/,images/.png
+#source.include_patterns = assets/*,images/*.png
 
 # (list) Source files to exclude (let empty to not exclude anything)
 #source.exclude_exts = spec
@@ -26,13 +26,13 @@ source.include_exts = py,png,jpg,kv,atlas
 
 # (list) List of exclusions using pattern matching
 # Do not prefix with './'
-#source.exclude_patterns = license,images//.jpg
+#source.exclude_patterns = license,images/*/*.jpg
 
 # (str) Application versioning (method 1)
-version = 0.1
+version = 0.2
 
 # (str) Application versioning (method 2)
-# version.regex = _version_ = ['"](.*)['"]
+# version.regex = __version__ = ['"](.*)['"]
 # version.filename = %(source.dir)s/main.py
 
 # (list) Application requirements
@@ -95,26 +95,23 @@ fullscreen = 0
 
 # (list) Permissions
 # (See https://python-for-android.readthedocs.io/en/latest/buildoptions/#build-options-1 for all the supported syntaxes and properties)
-android.permissions = CAMERA,MANAGE_EXTERNAL_STORAGE
-
-
-
+android.permissions = INTERNET, WRITE_EXTERNAL_STORAGE, CAMERA, READ_EXTERNAL_STORAGE,
 
 
 # (list) features (adds uses-feature -tags to manifest)
 #android.features = android.hardware.usb.host
 
 # (int) Target Android API, should be as high as possible.
-android.api = 31
+android.api = 33
 
 # (int) Minimum API your APK / AAB will support.
 android.minapi = 21
 
 # (int) Android SDK version to use
-android.sdk = 31
+android.sdk = 33
 
 # (str) Android NDK version to use
-android.ndk = 23b
+android.ndk = 25b
 
 # (int) Android NDK API to use. This is the minimum API your app will support, it should usually match android.minapi.
 android.ndk_api = 21
@@ -286,7 +283,7 @@ android.private_storage = True
 #android.copy_libs = 1
 
 # (list) The Android archs to build for, choices: armeabi-v7a, arm64-v8a, x86, x86_64
-# In past, was android.arch as we weren't supporting builds for multiple archs at the same time.
+# In past, was `android.arch` as we weren't supporting builds for multiple archs at the same time.
 android.archs = arm64-v8a, armeabi-v7a
 
 # (int) overrides automatic versionCode computation (used in build.gradle)
@@ -391,15 +388,15 @@ ios.codesign.allowed = false
 #ios.codesign.development_team.release = <hexstring>
 
 # (str) URL pointing to .ipa file to be installed
-# This option should be defined along with display_image_url and full_size_image_url options.
+# This option should be defined along with `display_image_url` and `full_size_image_url` options.
 #ios.manifest.app_url =
 
 # (str) URL pointing to an icon (57x57px) to be displayed during download
-# This option should be defined along with app_url and full_size_image_url options.
+# This option should be defined along with `app_url` and `full_size_image_url` options.
 #ios.manifest.display_image_url =
 
 # (str) URL pointing to a large icon (512x512px) to be used by iTunes
-# This option should be defined along with app_url and display_image_url options.
+# This option should be defined along with `app_url` and `display_image_url` options.
 #ios.manifest.full_size_image_url =
 
 
@@ -426,7 +423,7 @@ warn_on_root = 1
 #    Instead of doing:
 #
 #[app]
-#source.exclude_patterns = license,data/audio/.wav,data/images/original/
+#source.exclude_patterns = license,data/audio/*.wav,data/images/original/*
 #
 #    This can be translated into:
 #
